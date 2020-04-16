@@ -4,6 +4,7 @@ Created on Sat Dec 14 10:52:25 2019
 
 @author: xkadj
 """
+import argparse
 import pandas as pd
 import k_plot
 
@@ -51,9 +52,9 @@ class MessageParser:
         from osgar.logger import LogReader, lookup_stream_names, lookup_stream_id
         from osgar.lib.serialize import deserialize
 
-        streams = lookup_stream_names(log_file)
+        streams = lookup_stream_names(self.log_file)
 
-        with LogReader(log_file, only_stream_id=lookup_stream_id(log_file,'can.can')) as log:
+        with LogReader(self.log_file, only_stream_id=lookup_stream_id(self.log_file,'can.can')) as log:
             log_list = []
             for timestamp, stream_id, data in log:
                 sec = timestamp.total_seconds()
@@ -193,23 +194,32 @@ class MessageParser:
             messages_list.append(meassages)
         return messages_list, messages_IDs
 
+def argParser():
+    parser = argparse.ArgumentParser(description='   K-analyzer\nCopyright (c) 2020 CULS Prague, robotika.cz, s.r.o.\nprogrammed by: Jan Kaderabek')
+    parser.add_argument("logname")
+    parser.add_argument("robot")
+    args = parser.parse_args()
+    parser.print_help()
+    return args
+
 # =============================================================================
 # MAIN
 # =============================================================================
+if __name__ == '__main__':
 
-robot = 'K3'
-fig_serie = 20
+    # Get required arguments (logname robot)
+    args = argParser()
 
-log_file = r"C:\Use2rs\xkadj\OneDrive\PROJEKTY\Projekt_ROBOTIKA\logs\kloubak2-subt-estop-lora-191213_162253.log"
-log_file = r"C:\Users\xkadj\OneDrive\PROJEKTY\Projekt_ROBOTIKA\logs\K3_200415\test-pcan-200415_173953.log"
+    # Parse osgar log to dataframes
+    can = MessageParser(args.logname,args.robot)
 
-can = MessageParser(log_file,robot)
-KPlot = k_plot.KPlotter(robot,fig_serie)
-
-KPlot.plot_can_current(can)
-KPlot.plot_can_duty_cycle(can)
-KPlot.plot_can_duty_cycle_vesc(can)
-KPlot.plot_can_tacho(can)
-KPlot.plot_can_downdrops(can)
-KPlot.plot_can_angle(can)
+    # Plot seznozors in time
+    fig_serie = 20  # From this nuber are plotting figs
+    KPlot = k_plot.KPlotter(args.robot,fig_serie)
+    KPlot.plot_can_current(can)
+    KPlot.plot_can_duty_cycle(can)
+    KPlot.plot_can_duty_cycle_vesc(can)
+    KPlot.plot_can_tacho(can)
+    KPlot.plot_can_downdrops(can)
+    KPlot.plot_can_angle(can)
 
