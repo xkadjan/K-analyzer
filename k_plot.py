@@ -35,6 +35,21 @@ class KPlotter:
         plot.legend(loc=1)
         plot.tight_layout()
 
+    def plot_can_ctrl_erpm_vesc(self,msg):
+        self.plot_setup()
+        plot.plot(msg.values_0x301.time, msg.values_0x301.erpm,'r.-', linewidth=0.5, label='desired_motor_F-R(301h)_erpm[-]')
+        plot.plot(msg.values_0x302.time, msg.values_0x302.erpm,'g.-', linewidth=0.5, label='desired_motor_F-L(302h)_erpm[-]')
+        plot.plot(msg.values_0x303.time, msg.values_0x303.erpm,'y.-', linewidth=0.5, label='desired_motor_M-R(303h)_erpm[-]')
+        plot.plot(msg.values_0x304.time, msg.values_0x304.erpm,'k.-', linewidth=0.5, label='desired_motor_M-L(304h)_erpm[-]')
+        plot.plot(msg.values_0x305.time, msg.values_0x305.erpm,'y.-', linewidth=0.5, label='desired_motor_R-R(305h)_erpm[-]')
+        plot.plot(msg.values_0x306.time, msg.values_0x306.erpm,'k.-', linewidth=0.5, label='desired_motor_R-L(306h)_erpm[-]')
+        plot.title('CAN: desired_erpm_vesc', size=12, loc='left')
+        plot.xlabel('time[s]',size=10)
+        plot.ylabel('desired_erpm [-]',size=10)
+        plot.legend(loc=1)
+        plot.tight_layout()
+
+
     def plot_can_current(self,msg):
         self.plot_setup()
         plot.plot(msg.values_0x91.time, msg.values_0x91.current,'r.-', linewidth=0.5, label='motor_F-R(91h)_current[A]')

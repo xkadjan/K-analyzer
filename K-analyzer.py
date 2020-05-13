@@ -227,6 +227,7 @@ if __name__ == '__main__':
     fig_serie = 20  # From this nuber are plotting figs
     KPlot = k_plot.KPlotter(args.robot,fig_serie)
     KPlot.plot_can_ctrl_erpm(can)
+    KPlot.plot_can_ctrl_erpm_vesc(can)
     KPlot.plot_can_current(can)
     KPlot.plot_can_duty_cycle(can)
     KPlot.plot_can_duty_cycle_vesc(can)
