@@ -21,12 +21,12 @@ class MessageParser:
         self.values_0x904 = self.get_vesc_status(can_messages, 0x904)
         self.values_0x905 = self.get_vesc_status(can_messages, 0x905)
         self.values_0x906 = self.get_vesc_status(can_messages, 0x906)
-        self.values_0x301 = self.get_vesc_status(can_messages, 0x301)
-        self.values_0x302 = self.get_vesc_status(can_messages, 0x302)
-        self.values_0x303 = self.get_vesc_status(can_messages, 0x303)
-        self.values_0x304 = self.get_vesc_status(can_messages, 0x304)
-        self.values_0x305 = self.get_vesc_status(can_messages, 0x305)
-        self.values_0x306 = self.get_vesc_status(can_messages, 0x306)
+        self.values_0x301 = self.get_vesc_ctrl(can_messages, 0x301)
+        self.values_0x302 = self.get_vesc_ctrl(can_messages, 0x302)
+        self.values_0x303 = self.get_vesc_ctrl(can_messages, 0x303)
+        self.values_0x304 = self.get_vesc_ctrl(can_messages, 0x304)
+        self.values_0x305 = self.get_vesc_ctrl(can_messages, 0x305)
+        self.values_0x306 = self.get_vesc_ctrl(can_messages, 0x306)
         #standart can:
         self.values_0x91 = self.get_vesc_status(can_messages, 0x91)
         self.values_0x92 = self.get_vesc_status(can_messages, 0x92)
@@ -34,12 +34,12 @@ class MessageParser:
         self.values_0x94 = self.get_vesc_status(can_messages, 0x94)
         self.values_0x95 = self.get_vesc_status(can_messages, 0x95)
         self.values_0x96 = self.get_vesc_status(can_messages, 0x96)
-        self.values_0x31 = self.get_vesc_status(can_messages, 0x31)
-        self.values_0x32 = self.get_vesc_status(can_messages, 0x32)
-        self.values_0x33 = self.get_vesc_status(can_messages, 0x33)
-        self.values_0x34 = self.get_vesc_status(can_messages, 0x34)
-        self.values_0x35 = self.get_vesc_status(can_messages, 0x35)
-        self.values_0x36 = self.get_vesc_status(can_messages, 0x36)
+        self.values_0x31 = self.get_vesc_ctrl(can_messages, 0x31)
+        self.values_0x32 = self.get_vesc_ctrl(can_messages, 0x32)
+        self.values_0x33 = self.get_vesc_ctrl(can_messages, 0x33)
+        self.values_0x34 = self.get_vesc_ctrl(can_messages, 0x34)
+        self.values_0x35 = self.get_vesc_ctrl(can_messages, 0x35)
+        self.values_0x36 = self.get_vesc_ctrl(can_messages, 0x36)
 
         self.values_0x83 = self.get_can_tacho(can_messages, 0x83)
         self.values_0x81 = self.get_can_voltage(can_messages, 0x81)
@@ -81,6 +81,16 @@ class MessageParser:
                 if duty_cycle > 32767: duty_cycle = duty_cycle - 65534
                 values.append([messages[row][1], erpm/10, current/10, duty_cycle/10])
         values = pd.DataFrame(values,columns=['time','erpm','current','duty_cycle'])
+        return values
+
+    def get_vesc_ctrl(self,messages, message_ID):
+        values = []
+        for row in range(len(messages)):
+            if messages[row][2] == message_ID:
+                erpm = int(messages[row][3].zfill(16),16)
+                #if erpm > 2147483647: erpm = erpm - 4294967294
+                values.append([messages[row][1], erpm])
+        values = pd.DataFrame(values,columns=['time','erpm'])
         return values
 
     def get_can_voltage(self,messages, message_ID):
@@ -216,6 +226,8 @@ if __name__ == '__main__':
     # Plot seznozors in time
     fig_serie = 20  # From this nuber are plotting figs
     KPlot = k_plot.KPlotter(args.robot,fig_serie)
+    KPlot.plot_can_ctrl_erpm(can)
+    KPlot.plot_can_ctrl_erpm_vesc(can)
     KPlot.plot_can_current(can)
     KPlot.plot_can_duty_cycle(can)
     KPlot.plot_can_duty_cycle_vesc(can)
