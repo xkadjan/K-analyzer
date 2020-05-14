@@ -34,6 +34,7 @@ class KPlotter:
         plot.ylabel('desired_erpm [-]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_ctrl_erpm_vesc(self,msg):
         self.plot_setup()
@@ -48,7 +49,7 @@ class KPlotter:
         plot.ylabel('desired_erpm [-]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
-
+        plot.show()
 
     def plot_can_current(self,msg):
         self.plot_setup()
@@ -63,6 +64,7 @@ class KPlotter:
         plot.ylabel('voltage[V] / current [A]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_erpm(self,msg):
         self.plot_setup()
@@ -77,6 +79,7 @@ class KPlotter:
         plot.ylabel('voltage[V] / erpm [-]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_duty_cycle(self,msg):
         self.plot_setup()
@@ -93,6 +96,7 @@ class KPlotter:
         plot.ylabel('voltage[V] / duty_cycle [%]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_duty_cycle_vesc(self,msg):
         self.plot_setup()
@@ -109,6 +113,7 @@ class KPlotter:
         plot.ylabel('voltage[V] / duty_cycle [%]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_tacho(self,msg):
         self.plot_setup()
@@ -125,6 +130,7 @@ class KPlotter:
         plot.ylabel('distance [cm]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_downdrops(self,msg):
         self.plot_setup()
@@ -137,6 +143,7 @@ class KPlotter:
         plot.ylabel('downdrops[-]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
 
     def plot_can_angle(self,msg):
         self.plot_setup()
@@ -148,3 +155,4 @@ class KPlotter:
         plot.ylabel('angle[-]',size=10)
         plot.legend(loc=1)
         plot.tight_layout()
+        plot.show()
